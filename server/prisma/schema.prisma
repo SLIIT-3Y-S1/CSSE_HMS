@@ -133,14 +133,14 @@ model PatientMedicalRecord {
   doctorID      String   @db.Char(36)
   diagnosis     String?
   treatmentPlan String?
-  prescriptionID String  @db.Char(36)
+  prescriptionID String?  @db.Char(36) 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   // Relations
   Patient        Patient   @relation(fields: [patientID], references: [patientID])
   Doctor         Doctor    @relation(fields: [doctorID], references: [doctorID])
-  Prescription   PatientPrescription @relation(fields: [prescriptionID], references: [prescriptionID])
+  Prescription   PatientPrescription? @relation(fields: [prescriptionID], references: [prescriptionID])
 }
 
 model Appointment {
