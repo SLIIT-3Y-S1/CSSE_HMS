@@ -23,11 +23,11 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
   return (
     <>
       <div
-        className={`transition-all duration-300 ease-linear ${
+        className={`sidenav transition-all duration-1000 ease-in-out ${
           isOpen ? "w-[300px]" : "w-0 overflow-hidden"
         }`} /* Apply transition on width */
       >
-        <nav className="bg-[#f7f7f8] h-full py-6 px-4 font-[sans-serif] flex flex-col relative">
+        <nav className="bg-[#F8F8F8] h-full py-6 px-4 font-[sans-serif] flex flex-col relative">
           <h2>CSSE HMS</h2>
           <button
             onClick={onClick}
@@ -80,7 +80,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
             </li>
           </ul>
 
-          <div className=" flex-grow ">
+          <div className=" align-bottom">
             <div className=" border-t-2 border-gray-300 mt-4">
               <ul className="inset-x-0 bottom-0">
                 <li>
