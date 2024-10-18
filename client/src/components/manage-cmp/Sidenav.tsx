@@ -61,7 +61,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
                 }`}
               >
                 <RiHealthBookFill className="text-xl mr-2" />
-                <span>Patient EHR</span>
+                <span>Patient Records</span>
               </Link>
             </li>
             <li>

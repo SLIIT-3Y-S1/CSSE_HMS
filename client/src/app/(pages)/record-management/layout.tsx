@@ -25,12 +25,12 @@ export default function DashboardLayout({
       className={`${isSideBarOpen ? " main-container" : "side-nav-closed"}`}
     >
       <Sidenav onClick={handleClose} isOpen={isSideBarOpen} />
-      <div className="flex navbar bg-gray-100">
+      <div className="flex navbar shadow-md">
 
         {!isSideBarOpen && (
-          <div className="flex items-start ml-2 mt-2">
+          <div className="flex items-center ml-2">
             <button
-              className="flex items-center justify-center p-2 rounded-md text-black hover:bg-gray-300 focus:outline-none"
+              className="flex justify-center p-2 rounded-md text-black hover:bg-gray-300 focus:outline-none"
               onClick={handleOpen}
             >
               <FaBars className="w-5 h-5" />
@@ -38,7 +38,7 @@ export default function DashboardLayout({
           </div>
         )}
 
-        <div className="flex items-center"> <Breadcrumb /> </div>
+        <div className="ml-10 flex items-center"> <Breadcrumb /> </div>
       </div>
       <div className="maincontent">{children}</div>
     </div>
