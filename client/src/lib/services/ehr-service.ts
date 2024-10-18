@@ -1,9 +1,16 @@
 // fetchAllPatients
 export const fetchPatients = async () => {
-    const response = await fetch('http://localhost:5500/api/v1/patient/all');
+  try {
+    const response = await fetch("http://localhost:5500/api/v1/patient/all");
+
     if (!response.ok) {
-      throw new Error('Failed to fetch patients');
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch patients data");
     }
-    return response.json();
-  };
-  
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching patients:", error);
+    throw error; // Propagate the error to be handled by the caller
+  }
+};
