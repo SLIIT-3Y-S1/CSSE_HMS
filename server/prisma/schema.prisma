@@ -3,22 +3,22 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" 
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  userID    String  @id @default(uuid()) @db.Char(36)
-  username  String  @db.VarChar(50)
-  email     String  @db.VarChar(100)
-  password  String  @db.VarChar(255)
+  userID    String   @id @default(uuid()) @db.Char(36)
+  username  String   @db.VarChar(50)
+  email     String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(255)
   role      Role
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
-  Patient   Patient?
-  Doctor    Doctor?
+  Patient Patient?
+  Doctor  Doctor?
 }
 
 model Patient {
@@ -37,55 +37,54 @@ model Patient {
   updatedAt  DateTime @updatedAt
 
   // Relations
-  User  User      @relation(fields: [userID], references: [userID])
-  HealthCard      PatientHealthCard?
-  ExtraInfo       PatientExtra?
-  Prescriptions   PatientPrescription[]
-  MedicalRecords  PatientMedicalRecord[]
-  Appointments    Appointment[]
-  Billing         Billing[]
-
+  User           User                   @relation(fields: [userID], references: [userID])
+  HealthCard     PatientHealthCard?
+  ExtraInfo      PatientExtra?
+  Prescriptions  PatientPrescription[]
+  MedicalRecords PatientMedicalRecord[]
+  Appointments   Appointment[]
+  Billing        Billing[]
 }
 
 model Doctor {
-  doctorID    String   @id @default(uuid()) @db.Char(36)
-  userID      String   @unique @db.Char(36)
-  firstname   String   @db.VarChar(100)
-  lastname    String   @db.VarChar(100)
-  specialization String @db.VarChar(100)
-  contact     String   @db.VarChar(15)
-  email       String   @db.VarChar(100)
-  address     String   @db.VarChar(255)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  doctorID       String   @id @default(uuid()) @db.Char(36)
+  userID         String   @unique @db.Char(36)
+  firstname      String   @db.VarChar(100)
+  lastname       String   @db.VarChar(100)
+  specialization String   @db.VarChar(100)
+  contact        String   @db.VarChar(15)
+  email          String   @db.VarChar(100)
+  address        String   @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relations
-  User  User        @relation(fields: [userID], references: [userID])
-  MedicalRecords   PatientMedicalRecord[]
-  Appointments     Appointment[]
-  Prescriptions    PatientPrescription[]
+  User           User                   @relation(fields: [userID], references: [userID])
+  MedicalRecords PatientMedicalRecord[]
+  Appointments   Appointment[]
+  Prescriptions  PatientPrescription[]
 }
 
 model PatientHealthCard {
-  patientID         String   @unique @db.Char(36)
-  healthcardID      String   @id @default(uuid()) @db.Char(36)
-  healthCardStatus  HealthCardStatus
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  patientID        String           @unique @db.Char(36)
+  healthcardID     String           @id @default(uuid()) @db.Char(36)
+  healthCardStatus HealthCardStatus
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   // Relations
-  Patient  Patient @relation(fields: [patientID], references: [patientID])
+  Patient Patient @relation(fields: [patientID], references: [patientID])
 }
 
 model PatientExtra {
-  patientID  String   @id @db.Char(36)
-  allergies  String?
+  patientID     String   @id @db.Char(36)
+  allergies     String?
   immunizations String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relations
-  Patient    Patient   @relation(fields: [patientID], references: [patientID])
+  Patient Patient @relation(fields: [patientID], references: [patientID])
 }
 
 model PatientPrescription {
@@ -96,38 +95,39 @@ model PatientPrescription {
   updatedAt      DateTime @updatedAt
 
   // Relations
-  Patient        Patient   @relation(fields: [patientID], references: [patientID])
-  Doctor         Doctor    @relation(fields: [doctorID], references: [doctorID])
+  Patient           Patient                   @relation(fields: [patientID], references: [patientID])
+  Doctor            Doctor                    @relation(fields: [doctorID], references: [doctorID])
   PrescriptionDrugs PatientPrescriptionDrug[]
-  MedicalRecord  PatientMedicalRecord[]
+  MedicalRecord     PatientMedicalRecord[]
 }
 
 model PatientPrescriptionDrug {
-  prescriptionID String @db.Char(36)
-  medicationID   String @db.Char(36)
+  prescriptionID String   @db.Char(36)
+  medicationID   String   @db.Char(36)
   quantity       Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   // Relations
-  Prescription  PatientPrescription  @relation(fields: [prescriptionID], references: [prescriptionID])
-  Medication    DrugInventory        @relation(fields: [medicationID], references: [medicationID])
+  Prescription PatientPrescription @relation(fields: [prescriptionID], references: [prescriptionID])
+  Medication   DrugInventory       @relation(fields: [medicationID], references: [medicationID])
 
   @@id([prescriptionID, medicationID])
 }
 
 model DrugInventory {
-  medicationID  String   @id @default(uuid()) @db.Char(36)
-  drugName      String   @db.VarChar(100)
-  details       String?
-  stockLevel    Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  medicationID String   @id @default(uuid()) @db.Char(36)
+  drugName     String   @db.VarChar(100)
+  details      String?
+  stockLevel   Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   PrescriptionDrugs PatientPrescriptionDrug[]
 }
 
 model PatientMedicalRecord {
+<<<<<<< Updated upstream
   recordID      String   @id @default(uuid()) @db.Char(36)
   patientID     String   @db.Char(36)
   doctorID      String   @db.Char(36)
@@ -141,48 +141,63 @@ model PatientMedicalRecord {
   Patient        Patient   @relation(fields: [patientID], references: [patientID])
   Doctor         Doctor    @relation(fields: [doctorID], references: [doctorID])
   Prescription   PatientPrescription @relation(fields: [prescriptionID], references: [prescriptionID])
+=======
+  recordID       String   @id @default(uuid()) @db.Char(36)
+  patientID      String   @db.Char(36)
+  doctorID       String   @db.Char(36)
+  diagnosis      String?
+  treatmentPlan  String?
+  prescriptionID String?  @db.Char(36)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  Patient      Patient              @relation(fields: [patientID], references: [patientID])
+  Doctor       Doctor               @relation(fields: [doctorID], references: [doctorID])
+  Prescription PatientPrescription? @relation(fields: [prescriptionID], references: [prescriptionID])
+>>>>>>> Stashed changes
 }
 
 model Appointment {
-  appointmentID  String   @id @default(uuid()) @db.Char(36)
-  patientID      String   @db.Char(36)
-  doctorID       String   @db.Char(36)
+  appointmentID   String            @id @default(uuid()) @db.Char(36)
+  patientID       String            @db.Char(36)
+  doctorID        String            @db.Char(36)
   appointmentDate DateTime
   appointmentTime DateTime
-  status         AppointmentStatus
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  status          AppointmentStatus
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
   // Relations
-  Patient    Patient  @relation(fields: [patientID], references: [patientID])
-  Doctor     Doctor   @relation(fields: [doctorID], references: [doctorID])
-  Billing    Billing?
+  Patient Patient  @relation(fields: [patientID], references: [patientID])
+  Doctor  Doctor   @relation(fields: [doctorID], references: [doctorID])
+  Billing Billing?
 }
 
 model Billing {
-  billingID      String   @id @default(uuid()) @db.Char(36)
-  patientID      String   @db.Char(36)
-  appointmentID  String   @unique @db.Char(36)
-  totalAmount    Float
-  paymentStatus  PaymentStatus
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  billingID     String        @id @default(uuid()) @db.Char(36)
+  patientID     String        @db.Char(36)
+  appointmentID String        @unique @db.Char(36)
+  totalAmount   Float
+  paymentStatus PaymentStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   // Relations
-  Patient     Patient    @relation(fields: [patientID], references: [patientID])
+  Patient     Patient     @relation(fields: [patientID], references: [patientID])
   Appointment Appointment @relation(fields: [appointmentID], references: [appointmentID])
   Payments    Payment[]
 }
 
 model Payment {
-  paymentID     String   @id @default(uuid()) @db.Char(36)
-  billingID     String   @db.Char(36)
+  paymentID     String        @id @default(uuid()) @db.Char(36)
+  billingID     String        @db.Char(36)
   paymentMethod PaymentMethod
   paymentAmount Float
-  paymentDate   DateTime @default(now())
+  paymentDate   DateTime      @default(now())
 
   // Relations
-  Billing    Billing   @relation(fields: [billingID], references: [billingID])
+  Billing Billing @relation(fields: [billingID], references: [billingID])
 }
 
 enum Role {
