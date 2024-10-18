@@ -1,8 +1,10 @@
+"use client";
 
 const AppointmentHomePage = () => {
-  return (
-    <div>AppointmentHomePage</div>
-  )
-}
 
-export default AppointmentHomePage
+  return (
+   <></>
+  );
+};
+
+export default AppointmentHomePage;
