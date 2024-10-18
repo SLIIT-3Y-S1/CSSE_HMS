@@ -45,7 +45,7 @@ export class PatientController {
     if (!patient) {
       return { message: 'Patient not found' };
     }
-    return { uniqueCode: patient.uniqueCode };
+    return { uniqueCode: patient };
   }
 
   @Get('get-qrcode/:id')
@@ -57,7 +57,7 @@ export class PatientController {
       return;
     }
     
-    const qrCode = await QRCode.toDataURL(uniqueCodeResponse.uniqueCode);
+    const qrCode = await QRCode.toDataURL('PatientID: ' + uniqueCodeResponse.uniqueCode.patientID +', Firstname: ' + uniqueCodeResponse.uniqueCode.firstname);
     
     // Convert the data URL to a buffer
     const buffer = Buffer.from(qrCode.split(",")[1], 'base64');
