@@ -23,15 +23,15 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
   return (
     <>
       <div
-        className={`sidenav transition-all duration-1000 ease-in-out ${
+        className={`sidenav font-semibold text-gray-500 transition-all duration-1000 ease-in-out ${
           isOpen ? "w-[300px]" : "w-0 overflow-hidden"
         }`} /* Apply transition on width */
       >
-        <nav className="bg-[#F8F8F8] h-full py-6 px-4 font-[sans-serif] flex flex-col relative">
+        <nav className="bg-[#F8F8F8] h-full py-6 px-4 flex flex-col relative">
           <h2>CSSE HMS</h2>
           <button
             onClick={onClick}
-            className="absolute top-4 right-4 text-black hover:text-red-600"
+            className="absolute top-4 right-4  hover:text-red-600"
           >
             {" "}
             <FaTimes />
@@ -41,7 +41,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
             <li>
               <Link
                 href="/record-management"
-                className={`text-black hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
                   isActive("/record-management")
                     ? "bg-blue-200"
                     : "hover:bg-gray-200"
@@ -54,7 +54,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
             <li>
               <Link
                 href="/record-management/ehr"
-                className={`text-black hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
                   isActive("/record-management/ehr")
                     ? "bg-blue-200"
                     : "hover:bg-gray-200"
@@ -67,7 +67,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
             <li>
               <Link
                 href="/record-management/inventory"
-                className={`text-black hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
                   isActive("/record-management/inventory")
                     ? "bg-blue-200"
                     : "hover:bg-gray-200"
@@ -75,7 +75,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
               >
                 <GiMedicines className="text-xl mr-2" />
                 <span>Inventory</span>
-                <span className="text-black hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
+                <span className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
               </Link>
             </li>
           </ul>
@@ -86,7 +86,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
                 <li>
                   <Link
                     href="/record-management/profile"
-                    className={`text-black hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                    className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
                       isActive("/record-management/profile")
                         ? "bg-blue-200"
                         : "hover:bg-gray-200"
@@ -98,7 +98,7 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
                 <li>
                   <Link
                     href="/record-management/logout"
-                    className="text-black hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"
+                    className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"
                   >
                     <span>Logout</span>
                   </Link>
