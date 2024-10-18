@@ -9,6 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.enableCors({
     origin: `http://localhost:${port}`,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
 
   await app.listen(port, () => {

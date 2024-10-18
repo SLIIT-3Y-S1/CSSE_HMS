@@ -5,8 +5,10 @@ import { FaTimes } from "react-icons/fa"; // Import the close icon
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GiMedicines } from "react-icons/gi";
-import { RiHealthBookFill } from "react-icons/ri";
+import { RiAdminFill, RiHealthBookFill } from "react-icons/ri";
 import { IoMdHome } from "react-icons/io";
+import { GrAnalytics } from "react-icons/gr";
+import { MdAnalytics } from "react-icons/md";
 
 interface SidenavProps {
   onClick: () => void;
@@ -17,6 +19,11 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
   const pathname = usePathname();
   // Function to check if the current route is active
   const isActive = (path: string) => pathname === path;
+  const [dropDown, setDropDown] = useState(false);
+
+  function toggleDropDown() {
+    setDropDown(!dropDown);
+  }
 
   //if (!isOpen) return null;
   //else {
@@ -78,23 +85,73 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
                 <span className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
               </Link>
             </li>
+            <li>
+              <Link
+                href="/record-management/analytics"
+                className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                  isActive("/record-management/analytics")
+                    ? "bg-blue-200"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+               <MdAnalytics className="text-xl mr-2" />
+                <span>Hospital Analytics</span>
+                <span className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
+              </Link>
+            </li>
+
+            <li>
+              <button
+                className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                  isActive("/record-management/administrator/user-manage") ||
+                  isActive("/record-management/administrator/role-manage")
+                    ? "text-[#077fbb]"
+                    : "hover:bg-gray-200"
+                }`}
+                type="button"
+                onClick={toggleDropDown}
+              >
+                <RiAdminFill className="text-xl mr-2" />
+                <span>Administrator</span>
+              </button>
+            </li>
+            {dropDown && (
+              <div className="ml-10">
+                <li>
+                  <Link
+                    href="/record-management/administrator/user-manage"
+                    className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                      isActive("/record-management/administrator/user-manage")
+                        ? "bg-blue-200"
+                        : "hover:bg-gray-200"
+                    }`}
+                  >
+                  
+                    <span>User Management</span>
+                    <span className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/record-management/administrator/role-manage"
+                    className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
+                      isActive("/record-management/administrator/role-manage")
+                        ? "bg-blue-200"
+                        : "hover:bg-gray-200"
+                    }`}
+                  >
+                   
+                    <span>Role Management</span>
+                    <span className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"></span>
+                  </Link>
+                </li>
+              </div>
+            )}
           </ul>
 
           <div className=" align-bottom">
             <div className=" border-t-2 border-gray-300 mt-4">
               <ul className="inset-x-0 bottom-0">
-                <li>
-                  <Link
-                    href="/record-management/profile"
-                    className={` hover:text-[#077fbb] text-sm flex items-center rounded px-4 py-3 transition-all ${
-                      isActive("/record-management/profile")
-                        ? "bg-blue-200"
-                        : "hover:bg-gray-200"
-                    }`}
-                  >
-                    <span>Profile</span>
-                  </Link>
-                </li>
                 <li>
                   <Link
                     href="/record-management/logout"
