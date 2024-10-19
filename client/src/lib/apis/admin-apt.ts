@@ -2,21 +2,19 @@ import axios from "axios";
 
 
 export const fetchUsers = async () => {
-    try {
-      const response = await fetch("http://localhost:4200/api/v1/user/all");
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch patients data");
-      }
-  
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-      throw error; // Propagate the error to be handled by the caller
+  try {
+    const response = await axios.get("http://localhost:4200/api/v1/user/all");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching users:", error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || "Failed to fetch users data");
+    } else {
+      console.error("Unexpected error:", error);
+      throw new Error("An unexpected error occurred");
     }
-  };
-
+  }
+};
 
 export const registerUser = async (userData: any) => {
   try {

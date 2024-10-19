@@ -42,8 +42,8 @@ export class PatientService {
   }
 
 
-  findOne(id: string) {
-    return this.databaseService.patient.findUnique({
+  async findOne(id: string) {
+    return await this.databaseService.patient.findUnique({
       where: {
         patientID: id,
       }

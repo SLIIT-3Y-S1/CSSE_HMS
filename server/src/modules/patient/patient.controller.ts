@@ -20,9 +20,14 @@ export class PatientController {
     return patients;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.patientService.findOne(id);
+  @Get('getbyPatientID/:id')
+  async findOne(@Param('id') id: string) {
+    try{
+      return await this.patientService.findOne(id);
+    }
+    catch(e){
+      return {message: e.message};
+    }
   }
 
   @Patch(':id')

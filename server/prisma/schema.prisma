@@ -44,7 +44,8 @@ model Patient {
   MedicalRecords  PatientMedicalRecord[]
   Appointments    Appointment[]
   Billing         Billing[]
-
+  Allergies       Allergies[]
+  Immunizations   Immunizations[]
 }
 
 model Doctor {
@@ -221,3 +222,26 @@ enum PaymentMethod {
   insurance
   online
 }
+
+model Allergies {
+  id        Int         @id @default(autoincrement())
+  patientID String      @db.Char(36)
+  name      String      @db.VarChar(100)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  Patient   Patient    @relation(fields: [patientID], references: [patientID])
+}
+
+model Immunizations {
+  id        Int         @id @default(autoincrement())
+  patientID String      @db.Char(36)
+  name      String      @db.VarChar(100)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  // Relations
+  Patient   Patient    @relation(fields: [patientID], references: [patientID])
+}
+
+

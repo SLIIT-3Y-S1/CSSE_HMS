@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface BannerProps {
-    FirstName?: string;
-    LastName?: string;
-    UniqueCode?: string;
-    NIC?: string;
-    DOB?: string;
-    Age?: number;
-    Address?: string;
-    Contact?: string;
+    FirstName?: any;
+    LastName?: any;
+    UniqueCode?: any;
+    NIC?: any;
+    DOB?: any;
+    Age?: any;
+    Address?: any;
+    Contact?: any;
 }
 
 function PatientProfileBanner({ FirstName, LastName, UniqueCode, NIC, DOB, Age, Address, Contact }: BannerProps) {

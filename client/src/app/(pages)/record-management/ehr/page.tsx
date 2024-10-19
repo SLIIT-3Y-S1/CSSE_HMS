@@ -3,10 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaSearch } from "react-icons/fa";
 import { fetchPatients } from "@/lib/apis/ehr-api";
+import { useRouter } from "next/navigation";
 
 const ManageEHRPage = () => {
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
   const fetchPatientsData = async () => {
     const data = await fetchPatients();
     setPatients(data);
@@ -21,7 +24,11 @@ const ManageEHRPage = () => {
       patient.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
       patient.NIC.includes(searchTerm)
   );
-
+  
+  const handleViewProfile = (patientID) => {
+    router.push(`ehr/profile?id=${patientID}`);
+  };
+  
   return (
     <div className="flex-col">
       <div className="text-3xl text-gray-500">Patient Health Records</div>
@@ -67,7 +74,8 @@ const ManageEHRPage = () => {
                 <td className="p-4 text-sm text-black">{patient.NIC}</td>
                 <td className="p-4 text-sm text-black">{patient.contact}</td>
                 <td className="p-4">
-                  <button className="mr-4 flex text-blue-500 hover:text-blue-700 fill-blue-500 hover:fill-blue-700">
+                  <button className="mr-4 flex text-blue-500 hover:text-blue-700 fill-blue-500 hover:fill-blue-700"
+                  onClick={() => handleViewProfile(patient.patientID)}>
                     <div className="mr-2">View</div>
                     <FaEdit className="text-xl" />
                   </button>

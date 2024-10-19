@@ -1,13 +1,60 @@
+"use client";
+
 import PatientProfileBanner from "@/components/manage-cmp/patient-profile-cmp/PatientProfileBanner";
-import React from "react";
+import { fetchPatientById } from "@/lib/apis/ehr-api";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiAddBoxFill } from "react-icons/ri";
 
 function page() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [primaryData, setPrimaryData] = useState(null);
+  
+  const extractDate = (timestamp: string): string => {
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0];
+  };
+
+  const fetchPrimaryData = async () => {
+    try {
+      const dataprimary = await fetchPatientById(id);
+      setPrimaryData(dataprimary);
+    } catch (error) {
+      console.error("Error fetching all patient data:", error);
+    }
+  };
+
+  const fetchPatientExtra = async () => {
+    try {
+      const dataprimary = await fetchPatientById(id);
+      setPrimaryData(dataprimary);
+    } catch (error) {
+      console.error("Error fetching all patient data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrimaryData();
+  }, []);
+
   return (
     <div>
-      <PatientProfileBanner />
-
+      {primaryData ? (
+        <PatientProfileBanner
+          FirstName={primaryData.firstname}
+          LastName={primaryData.lastname}
+          UniqueCode={primaryData.uniqueCode}
+          NIC={primaryData.NIC}
+          DOB={ extractDate(primaryData.dob)}
+          Age={primaryData.age}
+          Address={primaryData.address}
+          Contact={primaryData.contact}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
       {/*Immunizations and Alergies*/}
       <div className="flex flex-row justify-between mt-5">
         {/*Immunizations*/}
