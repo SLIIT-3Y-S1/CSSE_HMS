@@ -13,9 +13,9 @@ export default function Home() {
     setUserID(userID);
     
     // If not found in localStorage, try sessionStorage
-    if (!userID) {
-      window.location.href = '/login'; 
-    }
+    // if (!userID) {
+    //   window.location.href = '/login'; 
+    // }
 
     // If still not found, return a default value or handle accordingly
     return userID || 'default-user-id';
