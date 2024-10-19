@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaSearch } from "react-icons/fa";
-import { fetchPatients } from "@/lib/services/ehr-service";
+import { fetchPatients } from "@/lib/apis/ehr-api";
 
 const ManageEHRPage = () => {
   const [patients, setPatients] = useState([]);

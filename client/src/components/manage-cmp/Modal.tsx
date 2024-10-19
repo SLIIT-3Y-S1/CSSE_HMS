@@ -57,10 +57,9 @@ interface ModalProps {
     content: ReactNode;
     onClose: MouseEventHandler<SVGSVGElement | HTMLButtonElement>;
     isModalOpen: boolean;
-    onSubmit?: MouseEventHandler<HTMLButtonElement>;
 }
 
-function Modal({ title, content, onClose, isModalOpen, onSubmit }: ModalProps) {
+function Modal({ title, content, onClose, isModalOpen }: ModalProps) {
     return (
         <>
             {isModalOpen && (
@@ -87,22 +86,6 @@ function Modal({ title, content, onClose, isModalOpen, onSubmit }: ModalProps) {
                             </svg>
                         </div>
                         <div className="my-6">{content}</div>
-                        <div className="border-t border-gray-300 pt-6 flex justify-end gap-4">
-                            <button
-                                type="button"
-                                className="px-4 py-2 rounded-lg text-gray-800 text-sm border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300 active:bg-gray-200"
-                                onClick={onClose}
-                            >
-                                Close
-                            </button>
-                            <button
-                                type="button"
-                                onSubmit={onSubmit}
-                                className="px-4 py-2 rounded-lg text-white text-sm border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700 active:bg-blue-600"
-                            >
-                                Save
-                            </button>
-                        </div>
                     </div>
                 </div>
             )}

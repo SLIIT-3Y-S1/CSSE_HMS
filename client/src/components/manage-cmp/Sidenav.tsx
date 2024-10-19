@@ -153,12 +153,15 @@ function Sidenav({ onClick, isOpen }: SidenavProps) {
             <div className=" border-t-2 border-gray-300 mt-4">
               <ul className="inset-x-0 bottom-0">
                 <li>
-                  <Link
-                    href="/record-management/logout"
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem('userID');
+                      window.location.href = '/login';
+                      }}
                     className=" hover:text-[#077fbb] text-sm flex items-center hover:bg-gray-200 rounded px-4 py-3 transition-all"
                   >
                     <span>Logout</span>
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
