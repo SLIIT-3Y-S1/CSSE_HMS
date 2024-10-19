@@ -14,9 +14,10 @@ export class PatientController {
     return this.patientService.create(createPatientDto);
   }
 
-  @Get()
-  findAll() {
-    return this.patientService.findAll();
+  @Get('all')
+  async findAll() {
+    const patients = await this.patientService.getAllPatients();
+    return patients;
   }
 
   @Get(':id')
