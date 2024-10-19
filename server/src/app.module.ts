@@ -7,6 +7,7 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { DigitalCardModule } from './digital-card/digital-card.module';
 import { PaymentModule } from './payment/payment.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { PaymentModule } from './payment/payment.module';
     AppointmentModule,
     DigitalCardModule,
     PaymentModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

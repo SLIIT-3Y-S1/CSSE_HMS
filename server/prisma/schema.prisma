@@ -64,6 +64,7 @@ model Doctor {
   MedicalRecords   PatientMedicalRecord[]
   Appointments     Appointment[]
   Prescriptions    PatientPrescription[]
+  ConsultCharts    ConsultChart[]  // Added this line to complete the relation
 }
 
 model PatientHealthCard {
@@ -144,19 +145,22 @@ model PatientMedicalRecord {
 }
 
 model Appointment {
-  appointmentID  String   @id @default(uuid()) @db.Char(36)
-  patientID      String   @db.Char(36)
-  doctorID       String   @db.Char(36)
-  appointmentDate DateTime
-  appointmentTime DateTime
-  status         AppointmentStatus
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  appointmentID    String   @id @default(uuid()) @db.Char(36)
+  patientID        String   @db.Char(36)
+  doctorID         String   @db.Char(36)
+  consultChartID   String   @db.Char(36)
+  status           AppointmentStatus
+  appointmentType  String   @db.VarChar(100)
+  refund           Boolean  @default(false) 
+  reschedule       Boolean  @default(false) 
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   // Relations
-  Patient    Patient  @relation(fields: [patientID], references: [patientID])
-  Doctor     Doctor   @relation(fields: [doctorID], references: [doctorID])
-  Billing    Billing?
+  Patient      Patient    @relation(fields: [patientID], references: [patientID])
+  Doctor       Doctor     @relation(fields: [doctorID], references: [doctorID])
+  ConsultChart ConsultChart @relation(fields: [consultChartID], references: [consultChartID])
+  Billing      Billing?
 }
 
 model Billing {
@@ -185,6 +189,33 @@ model Payment {
   Billing    Billing   @relation(fields: [billingID], references: [billingID])
 }
 
+model Hospital {
+  hospitalID   String   @id @default(uuid()) @db.Char(36)
+  hospitalName String   @db.VarChar(100)
+  hospitalFee  Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  ConsultCharts  ConsultChart[]
+}
+
+model ConsultChart {
+  consultChartID  String @id @default(uuid()) @db.Char(36)
+  doctorID        String   @db.Char(36)
+  hospitalID      String   @db.Char(36)
+  consultDate     DateTime
+  consultTime     String
+  available       Boolean  @default(true)
+
+  // Relations
+  Doctor   Doctor   @relation(fields: [doctorID], references: [doctorID])
+  Hospital Hospital @relation(fields: [hospitalID], references: [hospitalID])
+  Appointment Appointment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   patient
   doctor
@@ -208,6 +239,16 @@ enum AppointmentStatus {
   cancelled
 }
 
+enum refund{
+  true
+  false
+}
+
+enum reschedule{
+  true
+  false
+}
+
 enum PaymentStatus {
   pending
   paid
@@ -220,4 +261,9 @@ enum PaymentMethod {
   cash
   insurance
   online
+}
+
+enum available {
+  true
+  false
 }
