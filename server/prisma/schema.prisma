@@ -140,7 +140,9 @@ model PatientMedicalRecord {
   // Relations
   Patient        Patient   @relation(fields: [patientID], references: [patientID])
   Doctor         Doctor    @relation(fields: [doctorID], references: [doctorID])
-  Prescription   PatientPrescription? @relation(fields: [prescriptionID], references: [prescriptionID])
+
+  Prescription   PatientPrescription @relation(fields: [prescriptionID], references: [prescriptionID])
+
 }
 
 model Appointment {
