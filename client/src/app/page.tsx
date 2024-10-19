@@ -12,7 +12,7 @@ export default function Home() {
     let userID = localStorage.getItem('userID');
     setUserID(userID);
     
-    // If not found in localStorage, try sessionStorage
+    // If not found in localStorage
     if (!userID) {
       window.location.href = '/login'; 
     }

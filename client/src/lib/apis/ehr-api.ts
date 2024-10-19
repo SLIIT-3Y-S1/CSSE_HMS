@@ -159,6 +159,45 @@ export const deleteImmunization = async (id: number) => {
 };
 
 
+/*-------Patient Medical Records ------*/
+
+// Fetch medical records by patient ID
+export const fetchMedicalRecordsByPatientID = async (patientID: string) => {
+  try {
+    const response = await axios.get(`http://localhost:4200/api/v1/patient/getMedicalRecordsByPatientID/${patientID}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error fetching medical records:', error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to fetch medical records data');
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
+// Create a new medical record
+export const createMedicalRecord = async ( patientID: string, doctorID: string ) => {
+  try {
+    const data = {
+      patientID : patientID,
+      doctorID : doctorID,
+    }
+    const response = await axios.post(`http://localhost:4200/api/v1/patient/createMedicalRecords`, data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error creating medical record:', error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to create medical record');
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
+
 
 
 

@@ -1,13 +1,79 @@
+"use client";
+
 import PatientProfileBanner from "@/components/manage-cmp/patient-profile-cmp/PatientProfileBanner";
-import React from "react";
+import { fetchPatientById } from "@/lib/apis/ehr-api";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiAddBoxFill } from "react-icons/ri";
 
 function page() {
+  /*-------Constants and States-------*/
+
+  //patient id from url parameters
+  const searchParams = useSearchParams();
+  const pid = searchParams.get("pid");
+  const rid = searchParams.get("rid");
+
+  //primary data
+  const [primaryData, setPrimaryData] = useState(null);
+
+  //logged in UserID
+  const [userID, setUserID] = useState<string | null>(null);
+
+  //loading state
+  const [loading, setLoading] = useState(true);
+
+  const fetchPrimaryData = async () => {
+    try {
+      const dataprimary = await fetchPatientById(pid);
+      setPrimaryData(dataprimary);
+    } catch (error) {
+      console.error("Error fetching all patient data:", error);
+    }
+  };
+
+  const getUserID = () => {
+    try {
+      let userID = localStorage.getItem("userID");
+      setUserID(userID);
+      //console.log("UserID from local storage:", userID);
+    } catch (error) {
+      console.error("Error getting userID from local storage:", error);
+    }
+  };
+
+  const extractDate = (timestamp: string): string => {
+    const date = new Date(timestamp);
+    return date.toISOString().split("T")[0];
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      getUserID();
+      await fetchPrimaryData();
+      setLoading(false);
+      console.log(pid);
+      console.log(rid);
+    };
+    fetchData();
+  }, []);
   return (
     <div>
-      <PatientProfileBanner />
-
+      {primaryData ? (
+        <PatientProfileBanner
+          FirstName={primaryData.firstname}
+          LastName={primaryData.lastname}
+          UniqueCode={primaryData.uniqueCode}
+          NIC={primaryData.NIC}
+          DOB={extractDate(primaryData.dob)}
+          Age={primaryData.age}
+          Address={primaryData.address}
+          Contact={primaryData.contact}
+        />
+      ) : (
+        <p>Loading...</p>
+      )}
       {/*Header Section*/}
       <div className="mt-5 flex flex-col">
         <div className="flex text-gray-700 text-2xl">

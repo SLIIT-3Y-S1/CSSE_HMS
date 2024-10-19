@@ -6,6 +6,7 @@ import { UpdatePatientAllergyDto } from './dto/update-patient-allergy.dto';
 import { CreateAllergyDto } from './dto/create-patient-allergy.dto';
 import { CreateImmunizationsDto } from './dto/create-patient-immunizations.dto';
 import { UpdateImmunizationsDto } from './dto/update-patient-immunizations.dto';
+import { CreateMedicalRecordDto } from './dto/create-medical-record.dto';
 
 @Injectable()
 export class PatientService {
@@ -131,6 +132,22 @@ export class PatientService {
     return this.databaseService.immunizations.update({
       where: { id: Number(id) },
       data: updateImmunizationDto,
+    });
+  }
+
+  /* -----------Services for patient medical records-------------- */
+  async createMedicalRecord(createMedicalRecordDto: CreateMedicalRecordDto) {
+    return this.databaseService.patientMedicalRecord.create({
+      data: createMedicalRecordDto,
+    });
+  }
+
+  async getMedicalRecordsByPatientID(patientID: string) {
+    return this.databaseService.patientMedicalRecord.findMany({
+      where: { patientID },
+      include: {
+        Doctor: true, // Include the related doctor information
+      },
     });
   }
 }

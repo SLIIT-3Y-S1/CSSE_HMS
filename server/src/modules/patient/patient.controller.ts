@@ -7,6 +7,7 @@ import { CreateAllergyDto } from './dto/create-patient-allergy.dto';
 import { UpdatePatientAllergyDto } from './dto/update-patient-allergy.dto';
 import { CreateImmunizationsDto } from './dto/create-patient-immunizations.dto';
 import { UpdateImmunizationsDto } from './dto/update-patient-immunizations.dto';
+import { CreateMedicalRecordDto } from './dto/create-medical-record.dto';
 
 
 @Controller('patient')
@@ -123,6 +124,18 @@ export class PatientController {
   @Put('updateImmunization/:id')
   updateImmunization(@Param('id') id: number, @Body() updateImmunizationDto: UpdateImmunizationsDto) {
     return this.patientService.updateImmunization(Number(id), updateImmunizationDto);
+  }
+
+  /* -------Controllers for Patient Medications----------  */
+
+  @Post('createMedicalRecords')
+  createMedicalRecord(@Body() createMedicalRecordDto: CreateMedicalRecordDto) {
+    return this.patientService.createMedicalRecord(createMedicalRecordDto);
+  }
+
+  @Get('getMedicalRecordsByPatientID/:patientID')
+  getMedicalRecordsByPatientID(@Param('patientID') patientID: string) {
+    return this.patientService.getMedicalRecordsByPatientID(patientID);
   }
 
 }
