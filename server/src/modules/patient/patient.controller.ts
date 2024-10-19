@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Put } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
 import * as QRCode from 'qrcode';
+import { CreateAllergyDto } from './dto/create-patient-allergy.dto';
+import { UpdatePatientAllergyDto } from './dto/update-patient-allergy.dto';
+import { CreateImmunizationsDto } from './dto/create-patient-immunizations.dto';
+import { UpdateImmunizationsDto } from './dto/update-patient-immunizations.dto';
 
 
 @Controller('patient')
@@ -75,4 +79,50 @@ export class PatientController {
     // Send the buffer as the response
     res.send(buffer);
   }
+
+  /* -------Controllers for Patient Allergies----------  */
+
+  @Post('createAllergy')
+  createAllergy(@Body() createAllergyDto: CreateAllergyDto) {
+    return this.patientService.createAllergy(createAllergyDto);
+  }
+
+  @Get('getAllergy/:patientID')
+  getAllergiesByPatientID(@Param('patientID') patientID: string) {
+    return this.patientService.getAllergiesByPatientID(patientID);
+  }
+
+  @Delete('deleteAllergy/:id')
+  deleteAllergy(@Param('id') id: string) {
+    return this.patientService.deleteAllergy(Number(id)); // Ensure id is an integer
+  }
+
+  @Put('updateAllergy/:id')
+  updateAllergy(@Param('id') id: number, @Body() UpdatePatientAllergyDto: UpdatePatientAllergyDto) {
+    return this.patientService.updateAllergy(Number(id), UpdatePatientAllergyDto);
+  }
+
+
+  /* -------Controllers for Patient Immunizations----------  */
+
+  @Post('createImmunization')
+  createImmunization(@Body() createImmunizationDto: CreateImmunizationsDto) {
+    return this.patientService.createImmunization(createImmunizationDto);
+  }
+
+  @Get('getImmunization/:patientID')
+  getImmunizationsByPatientID(@Param('patientID') patientID: string) {
+    return this.patientService.getImmunizationsByPatientID(patientID);
+  }
+
+  @Delete('deleteImmunization/:id')
+  deleteImmunization(@Param('id') id: string) {
+    return this.patientService.deleteImmunization(Number(id)); // Ensure id is an integer
+  }
+
+  @Put('updateImmunization/:id')
+  updateImmunization(@Param('id') id: number, @Body() updateImmunizationDto: UpdateImmunizationsDto) {
+    return this.patientService.updateImmunization(Number(id), updateImmunizationDto);
+  }
+
 }

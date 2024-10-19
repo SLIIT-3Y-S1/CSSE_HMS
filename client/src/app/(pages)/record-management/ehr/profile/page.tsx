@@ -1,21 +1,40 @@
 "use client";
 
+import PatientAllergies from "@/components/manage-cmp/patient-profile-cmp/PatientAllergies";
+import PatientImmunizations from "@/components/manage-cmp/patient-profile-cmp/PatientImmunizations";
 import PatientProfileBanner from "@/components/manage-cmp/patient-profile-cmp/PatientProfileBanner";
-import { fetchPatientById } from "@/lib/apis/ehr-api";
+import { fetchAllergiesByPatientID, fetchImmunizationsByPatientID, fetchPatientById } from "@/lib/apis/ehr-api";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiAddBoxFill } from "react-icons/ri";
 
 function page() {
+
+  /*-------Constants and States-------*/
+ 
+  //patient id from url parameters
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+
+  //primary data
   const [primaryData, setPrimaryData] = useState(null);
+
+  //allergies
+  const [allergies, setAllergies] = useState([]);
+
+  //immunizations
+  const [immunizations, setImmunizations] = useState([]);
+
+  //loading state
+  const [loading, setLoading] = useState(true);
   
   const extractDate = (timestamp: string): string => {
     const date = new Date(timestamp);
     return date.toISOString().split('T')[0];
   };
+
+  /*-------Functions-------*/
 
   const fetchPrimaryData = async () => {
     try {
@@ -26,18 +45,41 @@ function page() {
     }
   };
 
-  const fetchPatientExtra = async () => {
+  const fetchAllergies = async () => {
     try {
-      const dataprimary = await fetchPatientById(id);
-      setPrimaryData(dataprimary);
+      const allergies = await fetchAllergiesByPatientID(id);
+      setAllergies(allergies);
+      //console.log(allergies);
     } catch (error) {
-      console.error("Error fetching all patient data:", error);
+      console.error("Error fetching allergies:", error);
     }
-  };
+  }
+
+  const fetchImmunizations = async () => {
+    try {
+      const immunization = await fetchImmunizationsByPatientID(id);
+      setImmunizations(immunization);
+      console.log(immunization);
+    } catch (error) {
+      console.error("Error fetching allergies:", error);
+    }
+  }
+
+  /*-------Use Effect - On Page Load -------*/
 
   useEffect(() => {
-    fetchPrimaryData();
+    const fetchData = async () => {
+      await fetchPrimaryData();
+      await fetchAllergies();
+      await fetchImmunizations();
+      setLoading(false);
+    };
+    fetchData();
   }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -57,68 +99,12 @@ function page() {
       )}
       {/*Immunizations and Alergies*/}
       <div className="flex flex-row justify-between mt-5">
-        {/*Immunizations*/}
-        <div className="flex-col border-blue-700 w-1/2 shadow-md flex rounded-lg border bg-white p-5">
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex text-gray-900 font-bold rounded-md">
-              Allergies
-            </div>
-            <div className="flex">
-              <button className="flex flex-row text-green-600 hover:text-green-900">
-                Add <RiAddBoxFill className="text-2xl" />
-              </button>
-            </div>
-          </div>
-          <div className="flex mt-5">
-            <table className="w-full">
-              <tbody>
-                <tr>
-                  <td>Allergy name goes here</td>
-                  <td className="text-right">
-                    <button className="text-blue-600 hover:text-blue-900">
-                      <FaEdit />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900 ml-4">
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {/*Alergies*/}
+        <PatientAllergies allergiesData={allergies} patientID={id}/>
         {/*Spacer Div*/}
         <div className="p-2"></div>
-        {/*Alergies*/}
-        <div className="flex-col border-blue-700 w-1/2 shadow-md flex rounded-lg border bg-white p-5">
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex text-gray-900 font-bold rounded-md">
-              Immunizations
-            </div>
-            <div className="flex">
-              <button className="flex flex-row text-green-600 hover:text-green-900">
-                Add <RiAddBoxFill className="text-2xl" />
-              </button>
-            </div>
-          </div>
-          <div className="flex mt-5">
-            <table className="w-full">
-              <tbody>
-                <tr>
-                  <td>Immunization name goes here</td>
-                  <td className="text-right">
-                    <button className="text-blue-600 hover:text-blue-900">
-                      <FaEdit />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900 ml-4">
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {/*Immunizations*/}
+        <PatientImmunizations immunizationsData={immunizations} patientID={id}/>
       </div>
 
       {/*Medical Records and Appointment History*/}

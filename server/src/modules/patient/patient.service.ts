@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { log } from 'console';
 import { PrismaService } from '../db/prisma/prisma.service';
+import { UpdatePatientAllergyDto } from './dto/update-patient-allergy.dto';
+import { CreateAllergyDto } from './dto/create-patient-allergy.dto';
+import { CreateImmunizationsDto } from './dto/create-patient-immunizations.dto';
+import { UpdateImmunizationsDto } from './dto/update-patient-immunizations.dto';
 
 @Injectable()
 export class PatientService {
@@ -75,4 +79,58 @@ export class PatientService {
     })
   }
 
+
+  /* -----------Services for patient allergies-------------- */
+
+  async createAllergy(createAllergyDto: CreateAllergyDto) {
+    return this.databaseService.allergies.create({
+      data: createAllergyDto,
+    });
+  }
+
+  async getAllergiesByPatientID(patientID: string) {
+    return this.databaseService.allergies.findMany({
+      where: { patientID },
+    });
+  }
+
+  async deleteAllergy(id: number) {
+    return this.databaseService.allergies.delete({
+      where: { id: Number(id) }, // Ensure id is an integer
+    });
+  }
+
+  async updateAllergy(id: number, UpdatePatientAllergyDto: UpdatePatientAllergyDto) {
+    return this.databaseService.allergies.update({
+      where: { id: Number(id) },
+      data: UpdatePatientAllergyDto,
+    });
+  }
+
+  /* -----------Services for patient immunizations-------------- */
+
+  async createImmunization(createImmunizationDto: CreateImmunizationsDto) {
+    return this.databaseService.immunizations.create({
+      data: createImmunizationDto,
+    });
+  }
+
+  async getImmunizationsByPatientID(patientID: string) {
+    return this.databaseService.immunizations.findMany({
+      where: { patientID },
+    });
+  }
+
+  async deleteImmunization(id: number) {
+    return this.databaseService.immunizations.delete({
+      where: { id: Number(id) }, // Ensure id is an integer
+    });
+  }
+
+  async updateImmunization(id: number, updateImmunizationDto: UpdateImmunizationsDto) {
+    return this.databaseService.immunizations.update({
+      where: { id: Number(id) },
+      data: updateImmunizationDto,
+    });
+  }
 }
