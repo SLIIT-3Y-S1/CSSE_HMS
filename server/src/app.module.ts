@@ -18,11 +18,14 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces';
       envFilePath: '.env',
     }),
     AppointmentModule,
-    DigitalCardModule,
     PaymentModule,
+    DoctorModule,
     PatientModule,
-    AuthModule,
-    UserModule
+    MedicalRecordsModule,
+    HealthCardModule,
+    UserModule,
+    PrismaModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
