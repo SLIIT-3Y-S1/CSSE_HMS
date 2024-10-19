@@ -213,6 +213,7 @@ const DigitalCardHomePage = () => {
           },
         })
 
+        alert('Card requested successfully');
         console.log('card created!');
 
         fetchUserStatus();

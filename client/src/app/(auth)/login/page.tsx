@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import axios from 'axios'; 
+import image from './logo.png';
+import Image from 'next/image';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -48,9 +50,11 @@ const Login = () => {
             <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white px-10 py-16 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]">
               <div className="mb-10 text-center md:mb-16">
                 <a href="/#" className="mx-auto inline-block max-w-[160px]">
-                  <img
-                    src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-primary.svg"
+                  <Image
+                    src={image}
                     alt="logo"
+                    width={200}
+                    height={160}
                   />
                 </a>
               </div>
