@@ -35,4 +35,6 @@ const PaymentHomePage = ( ) => {
   );
 };
 
-export default PaymentHomePage;
+
+export default PaymentHomePage
+

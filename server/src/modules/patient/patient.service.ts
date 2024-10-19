@@ -33,9 +33,14 @@ export class PatientService {
     });
   }
 
-  async findAll() {
-    return this.databaseService.patient.findMany();
+  async getAllPatients() {
+    return await this.databaseService.patient.findMany({
+      include: {
+        User: true, // Assuming User is related to Patient via `userID`
+      },
+    });
   }
+
 
   findOne(id: string) {
     return this.databaseService.patient.findUnique({

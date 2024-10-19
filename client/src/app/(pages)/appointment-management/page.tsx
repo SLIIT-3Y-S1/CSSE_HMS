@@ -7,4 +7,6 @@ const AppointmentHomePage = () => {
   );
 };
 
+
 export default AppointmentHomePage;
+

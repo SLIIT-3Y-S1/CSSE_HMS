@@ -29,8 +29,23 @@ const Login = () => {
         alert('Login successful !');
         // Store the userID in localStorage or sessionStorage
         localStorage.setItem('userID', response.data.user.userID);
+        localStorage.setItem('userRole', response.data.user.role);
         // Redirect to the digital card page without exposing the userID in the URL
-        window.location.href = '/digital-card-issuance'; 
+        
+        switch (response.data.user.role) {
+          case 'admin':
+            window.location.href = '/record-management';
+            break;
+          case 'patient':
+            window.location.href = '/digital-card-issuance';
+            break;
+          case 'doctor':
+            window.location.href = '/record-management';
+            break;
+          default:
+            window.location.href = '/digital-card-issuance';
+            break;
+        }
       } else {
         alert('Invalid credentials !');
       }

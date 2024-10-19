@@ -25,3 +25,69 @@ body {
     text-wrap: balance;
   }
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* Container for the entire layout */
+.main-container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 60px 1fr; 
+  grid-template-areas: 
+    "sidenav navbar"
+    "sidenav maincontent"; 
+    transition: grid-template-columns 0.3s ease; 
+}
+
+.side-nav-closed {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 0 1fr;
+  grid-template-rows: 60px 1fr; 
+  grid-template-areas: 
+    "sidenav navbar"
+    "sidenav maincontent"; 
+    transition: grid-template-columns 0.3s ease; 
+
+}
+
+/* Top navigation bar */
+.navbar {
+  grid-area: navbar;
+}
+
+/* Side navigation bar */
+.sidenav {
+  grid-area: sidenav;
+  overflow: hidden;
+  transition: grid-template-columns 0.3s ease; 
+  
+  
+}
+
+/* Main content area */
+.maincontent {
+  grid-area: maincontent;
+  padding: 1rem;
+}

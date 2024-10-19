@@ -10,6 +10,9 @@ import { AuthModule } from './modules/_auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import * as session from 'express-session';
 import { MiddlewareConsumer } from '@nestjs/common/interfaces';
+import { DoctorModule } from './modules/doctor/doctor.module';
+import { MedicalRecordsModule } from './modules/medical-records/medical-records.module';
+import { PrismaModule } from './modules/db/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -18,11 +21,14 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces';
       envFilePath: '.env',
     }),
     AppointmentModule,
-    DigitalCardModule,
     PaymentModule,
+    DoctorModule,
     PatientModule,
+    MedicalRecordsModule,
+    UserModule,
+    PrismaModule,
+    DigitalCardModule,
     AuthModule,
-    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -30,12 +36,14 @@ import { MiddlewareConsumer } from '@nestjs/common/interfaces';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(session({
-        secret: 'your-secret-key',
-        resave: false,
-        saveUninitialized: false,
-        cookie: { maxAge: 3600000 } // 1 hour
-      }))
+      .apply(
+        session({
+          secret: 'your-secret-key',
+          resave: false,
+          saveUninitialized: false,
+          cookie: { maxAge: 3600000 }, // 1 hour
+        }),
+      )
       .forRoutes('*');
   }
 }
