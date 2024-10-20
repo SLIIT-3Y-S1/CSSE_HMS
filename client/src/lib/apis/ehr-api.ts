@@ -198,6 +198,33 @@ export const createMedicalRecord = async ( patientID: string, doctorID: string )
 };
 
 
+// Fetch medical records by record ID
+export const fetchMedicalRecordByID = async (recordID: string) => {
+  try {
+    const response = await axios.get(`http://localhost:4200/api/v1/patient/getMedicalRecordByID/${recordID}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error fetching medical records:', error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to fetch medical records data');
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
+
+
+export const updateMedicalRecord = async (recordID: string, updateData: { diagnosis?: string ,treatmentPlan?: string }) => {
+  try {
+    const response = await axios.put(`http://localhost:4200/api/v1/patient/updateMedicalRecord/${recordID}`, updateData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating medical record:", error);
+    throw error;
+  }
+};
+
 
 
 

@@ -5,6 +5,9 @@ import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @Controller('doctor')
 export class DoctorController {
+  remove(id: number): any {
+      throw new Error('Method not implemented.');
+  }
   constructor(private readonly doctorService: DoctorService) {}
 
   @Post()
@@ -27,10 +30,10 @@ export class DoctorController {
   //   return this.doctorService.update(+id, updateDoctorDto);
   // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.doctorService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.doctorService.remove(+id);
+  // }
 
   @Put(':userID')
   async updateDoctor(@Param('userID') userID: string, @Body() updateDoctorDto: UpdateDoctorDto) {

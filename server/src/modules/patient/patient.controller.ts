@@ -138,4 +138,13 @@ export class PatientController {
     return this.patientService.getMedicalRecordsByPatientID(patientID);
   }
 
+  @Get('getMedicalRecordByID/:recordID')
+  getMedicalRecordsByID(@Param('recordID') recordID: string) {
+    return this.patientService.getMedicalRecordByID(recordID);
+  }
+
+  @Put('updateMedicalRecord/:recordID')
+  updateMedicalRecord(@Param('recordID') recordID: string, @Body() updateData: { diagnosis?: string, treatmentPlan?: string }) {
+    return this.patientService.updateMedicalRecord(recordID, updateData);
+  }
 }

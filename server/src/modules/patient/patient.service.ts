@@ -150,4 +150,20 @@ export class PatientService {
       },
     });
   }
+
+  async getMedicalRecordByID(recordID: string) {
+    return this.databaseService.patientMedicalRecord.findUnique({
+      where: { recordID },
+      include: {
+        Doctor: true, // Include the related doctor information
+      },
+    });
+  }
+
+  async updateMedicalRecord(recordID: string, updateData:{ diagnosis?: string, treatmentPlan?: string }) {
+    return this.databaseService.patientMedicalRecord.update({
+      where: { recordID },
+      data: updateData,
+    });
+  }
 }

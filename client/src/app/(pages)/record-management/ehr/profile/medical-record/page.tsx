@@ -1,7 +1,9 @@
 "use client";
 
+import Diagnosis from "@/components/manage-cmp/medical-record-cmp/Diagnosis";
+import TreatmentPlan from "@/components/manage-cmp/medical-record-cmp/TreatmentPlan";
 import PatientProfileBanner from "@/components/manage-cmp/patient-profile-cmp/PatientProfileBanner";
-import { fetchPatientById } from "@/lib/apis/ehr-api";
+import { fetchMedicalRecordByID, fetchPatientById } from "@/lib/apis/ehr-api";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -17,6 +19,9 @@ function page() {
 
   //primary data
   const [primaryData, setPrimaryData] = useState(null);
+  
+  //medical record data
+  const [medicalRecordData, setMedicalRecordData] = useState(null);
 
   //logged in UserID
   const [userID, setUserID] = useState<string | null>(null);
@@ -32,6 +37,16 @@ function page() {
       console.error("Error fetching all patient data:", error);
     }
   };
+
+  const fetchMedicalRecordData = async () => {
+    try {
+      const data = await fetchMedicalRecordByID(rid);
+      setMedicalRecordData(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching medical record data:", error);
+    }
+  }
 
   const getUserID = () => {
     try {
@@ -52,9 +67,10 @@ function page() {
     const fetchData = async () => {
       getUserID();
       await fetchPrimaryData();
+      await fetchMedicalRecordData();
       setLoading(false);
-      console.log(pid);
-      console.log(rid);
+      //console.log(pid);
+      //console.log(rid);
     };
     fetchData();
   }, []);
@@ -75,83 +91,33 @@ function page() {
         <p>Loading...</p>
       )}
       {/*Header Section*/}
-      <div className="mt-5 flex flex-col">
-        <div className="flex text-gray-700 text-2xl">
-          Patient Medical Health Record
-        </div>
-        <div className="mt-5 flex flex-row text-gray-800 text-sm">
-          <div>Date Created</div>
-          <div className="ml-10 text-black font-bold">10/20/2024</div>
-        </div>
-        <div className="mt-1 flex flex-row text-gray-800 text-sm">
-          <div>Doctor in charge</div>
-          <div className="ml-4 text-black font-bold">Dr.Sanjitha Lakmali</div>
-        </div>
-      </div>
+      {medicalRecordData ? (
+          <>
+          <div className="mt-5 text-2xl font-medium text-gray-700">
+            Patient Medical Record
+          </div>
+            <div className="mt-5 flex flex-row text-gray-800 text-sm">
+              <div>Date Created</div>
+              <div className="ml-10 text-black font-bold">{extractDate(medicalRecordData.createdAt)}</div>
+            </div>
+            <div className="mt-1 flex flex-row text-gray-800 text-sm">
+              <div>Doctor in charge</div>
+              <div className="ml-4 text-black font-bold">
+                Dr. {medicalRecordData.Doctor.firstname} {medicalRecordData.Doctor.lastname}
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>Loading medical record data...</p>
+        )}
 
       <div className="flex flex-row justify-between mt-5">
         {/*Diagnosis*/}
-        <div className="flex-col border-blue-700 w-1/2 shadow-md flex rounded-lg border bg-white p-5">
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex text-gray-900 font-bold rounded-md">
-              Diagnosis
-            </div>
-            <div className="flex">
-              <button className="flex flex-row text-green-600 hover:text-green-900">
-                Add <RiAddBoxFill className="text-2xl" />
-              </button>
-            </div>
-          </div>
-          <div className="flex-row w-full mt-5">
-            <form>
-              <label className="mb-[10px] block text-base font-medium text-dark dark:text-white">
-                Enter Diagnosis
-              </label>
-              <textarea
-                rows={5}
-                placeholder="Default textarea"
-                className=" w-full border-gray-300 rounded-md"
-                value={"Diagnosis goes here"}
-              />
-
-              <button className="flex flex-row text-blue-600 hover:text-blue-900">
-                Edit <FaEdit className="ml-1 text-xl" />
-              </button>
-            </form>
-          </div>
-        </div>
+        <Diagnosis rid = {rid}/>
         {/*Spacer Div*/}
         <div className="p-2"></div>
         {/*Treatment plan*/}
-        <div className="flex-col border-blue-700 w-1/2 shadow-md flex rounded-lg border bg-white p-5">
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex text-gray-900 font-bold rounded-md">
-              Treatment Plan
-            </div>
-            <div className="flex">
-              <button className="flex flex-row text-green-600 hover:text-green-900">
-                Add <RiAddBoxFill className="text-2xl" />
-              </button>
-            </div>
-          </div>
-          <div className="flex-row w-full mt-5">
-            <form>
-              <label className="mb-[10px] block text-base font-medium text-dark dark:text-white">
-                Enter Diagnosis
-              </label>
-              <textarea
-                rows={5}
-                placeholder="Default textarea"
-                className=" w-full border-gray-300 rounded-md"
-                value={"Treatment plan goes here"}
-              />
-
-              <button className="flex flex-row text-blue-600 hover:text-blue-900">
-                Edit <FaEdit className="ml-1 text-xl" />
-              </button>
-            </form>
-          </div>
-        </div>
+        <TreatmentPlan rid = {rid}/>
       </div>
 
       <div className="flex-col mt-5 w-full border-blue-700 shadow-md flex rounded-lg border bg-white p-5">

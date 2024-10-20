@@ -1,12 +1,18 @@
 import { fetchDoctorDetails } from "@/lib/apis/doctor-api";
-import { createMedicalRecord } from "@/lib/apis/ehr-api";
+import { createMedicalRecord, fetchMedicalRecordsByPatientID } from "@/lib/apis/ehr-api";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { RiAddBoxFill } from "react-icons/ri";
 
 function PatientMedicalRecordsList({ userID, patientID, medicalRecordsList }) {
   const router = useRouter();
+  const [records, setRecords] = useState(medicalRecordsList);
+
+  useEffect(() => {
+    setRecords(medicalRecordsList);
+  }, [medicalRecordsList]);
+
   const extractDate = (timestamp: string): string => {
     const date = new Date(timestamp);
     return date.toISOString().split("T")[0];
@@ -16,18 +22,27 @@ function PatientMedicalRecordsList({ userID, patientID, medicalRecordsList }) {
     router.push(`profile/medical-record?pid=${patientID}&rid=${recordID}`);
   };
 
+  const fetchMedicalRecords = async () => {
+    try {
+      const medicalRecordsList = await fetchMedicalRecordsByPatientID(patientID);
+      setRecords(medicalRecordsList);
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+    }
+  };
+
   const createNewMedicalRecord = async () => {
-    confirm("Are you sure you want to create a new medical record?");
-    try{
+    if (confirm("Are you sure you want to create a new medical record?")) {
+      try {
         const data = await fetchDoctorDetails(userID);
         const doctorID = data.doctorID;
-        console.log("Doctor ID:", doctorID);
-        console.log(data)
-        createMedicalRecord( patientID, doctorID );
-    }catch(error){
+        await createMedicalRecord(patientID, doctorID);
+        await fetchMedicalRecords(); // Refetch the data
+      } catch (error) {
         console.error("Error creating medical record:", error);
+      }
     }
-  }
+  };
 
   return (
     <div className="flex-col border-blue-700 w-1/2 shadow-md flex rounded-lg border bg-white p-5">
@@ -36,8 +51,10 @@ function PatientMedicalRecordsList({ userID, patientID, medicalRecordsList }) {
           Medical Records
         </div>
         <div className="flex">
-          <button className="flex flex-row text-green-600 hover:text-green-900"
-          onClick={createNewMedicalRecord}>
+          <button
+            className="flex flex-row text-green-600 hover:text-green-900"
+            onClick={createNewMedicalRecord}
+          >
             Add <RiAddBoxFill className="text-2xl" />
           </button>
         </div>
@@ -52,7 +69,7 @@ function PatientMedicalRecordsList({ userID, patientID, medicalRecordsList }) {
             </tr>
           </thead>
           <tbody>
-            {medicalRecordsList.map((record) => (
+            {records.map((record) => (
               <tr key={record.recordID}>
                 <td>
                   {"Dr." +
