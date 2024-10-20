@@ -25,8 +25,8 @@ const AppointmentList: React.FC = () => {
   };
 
   return (
-    <div className="appointment-list">
-      <h2 className="title">Your Appointments</h2>
+    <div className="appointment-list m-10">
+      <h2 className="title font-bold text-green-800">Your Appointments List</h2>
       <ul className="appointment-list-container">
         {appointments.map((appointment) => (
           <li key={appointment.id} className="appointment-item">
@@ -44,12 +44,12 @@ const AppointmentList: React.FC = () => {
                 >
                   Pay Now
                 </button>
-                <button
+                {/* <button
                   className="mark-paid-btn"
                   onClick={() => handlePayment(appointment.id)}
                 >
                   Mark as Paid
-                </button>
+                </button> */}
               </div>
             )}
           </li>

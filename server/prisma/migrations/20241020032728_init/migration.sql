@@ -8,6 +8,7 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`userID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -156,6 +157,18 @@ CREATE TABLE `Payment` (
     `paymentDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`paymentID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Transaction` (
+    `transactionId` VARCHAR(191) NOT NULL,
+    `paymentId` VARCHAR(191) NOT NULL,
+    `amount` DOUBLE NOT NULL,
+    `currency` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`transactionId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

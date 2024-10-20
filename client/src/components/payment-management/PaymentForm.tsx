@@ -61,6 +61,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ param: { id ,amount} }) => {
       } else if (paymentIntent?.status === 'succeeded') {
         setPaymentStatus('Payment succeeded!');
         updateAppointmentStatus(id, 'Paid'); 
+        await saveTransaction();
         router.push('/payment-management/list'); 
       } else {
         setPaymentStatus('Payment is still processing, please wait...');
@@ -72,6 +73,29 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ param: { id ,amount} }) => {
     }
   };
 
+  const saveTransaction = async () => {
+    const transaction = {
+      paymentId: id.toString(),
+      amount,
+      status: 'Paid',
+      paymentMethod: 'stripe',
+    }
+    try {
+      const response = await fetch('http://localhost:5500/api/v1/payment/save-transaction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transaction),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error saving transaction');
+      }
+    } catch (error) {
+      console.error('Error saving transaction', error);
+    }
+  }
   return (
     <form onSubmit={handlePayment} className="space-y-4">
       <div className="bg-gray-50 p-4 rounded-md border border-gray-300">

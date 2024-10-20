@@ -184,6 +184,16 @@ model Payment {
   Billing Billing @relation(fields: [billingID], references: [billingID])
 }
 
+model Transaction {
+  transactionId String @id
+  paymentId String
+  amount Float
+  currency String
+  status String
+  paymentMethod  String 
+  created_at DateTime
+}
+
 enum Role {
   patient
   doctor

@@ -1,14 +1,23 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { PaymentService } from './payment.service';
+import { SaveTransactionDto } from './dtos/save_transaction.dto';
+import { PaymentFactory } from './factory/payment.factory';
 
 @Controller('payment')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(private readonly paymentFactory: PaymentFactory) {}
 
-  // @Post()
   @Post('create-payment-intent')
-  async createPaymentIntent(@Body() createPaymentDto: { amount: number, currency: string }) {
-    const paymentIntent = await this.paymentService.createPaymentIntent(createPaymentDto.amount, createPaymentDto.currency);
-   return { clientSecret: paymentIntent.client_secret };
+  async createPaymentIntent(@Body() createPaymentDto: { amount: number, currency: string, method: string }) {
+    console.log(createPaymentDto);
+    const paymentService = this.paymentFactory.createPaymentService(createPaymentDto.method);
+    const paymentIntent = await paymentService.createPaymentIntent(createPaymentDto.amount, createPaymentDto.currency);
+    return { clientSecret: paymentIntent.client_secret };
+  }
+
+  @Post('save-transaction')
+  async saveTransactions(@Body() saveTransactionDto: SaveTransactionDto) {
+    console.log(saveTransactionDto);
+    const paymentService = this.paymentFactory.createPaymentService(saveTransactionDto.paymentMethod); // Assuming paymentMethod contains the method to use
+    return await paymentService.saveTransaction(saveTransactionDto);
   }
 }
